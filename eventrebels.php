@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Event Rebels Add-On
 Plugin URI: http://www.gravityforms.com
 Description: Integrates Gravity Forms with Event Rebels allowing form submissions to be automatically sent to your eventrebels.com account.
-Version: 1.0
+Version: 1.1
 Author: Ilan Cohen <ilanco@gmail.com>
 Author URI: https://github.com/ilanco
 Text Domain: gravityformseventrebels
@@ -27,7 +27,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-define('GF_EVENTREBELS_VERSION', '1.0');
+define('GF_EVENTREBELS_VERSION', '1.1');
 
 add_action('gform_loaded', array('GF_EventRebels_Bootstrap', 'load'), 5);
 

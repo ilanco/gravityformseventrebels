@@ -494,7 +494,7 @@ class GFEventRebels extends GFFeedAddOn
                 continue;
             }
 
-            $contact = $this->add_contact_property($contact, $field_key, $field_value);
+            $contact = $this->add_contact_property($contact, $field_key, $field_value, $field_id, $form);
         }
 
         $this->log_debug(__METHOD__ . '(): Registering contact: ' . print_r($contact, true));
@@ -530,8 +530,18 @@ class GFEventRebels extends GFFeedAddOn
      * @param bool $replace (default: false)
      * @return array $contact
      */
-    public function add_contact_property($contact, $field_key, $field_value, $replace = false)
+    public function add_contact_property($contact, $field_key, $field_value, $field_id, $form)
     {
+        if (ctype_digit($field_key)) {
+            $field_key = 'UDF' . $field_key;
+
+            if (isset($form['fields'][$field_id])) {
+                $field_value = $field_value;
+            } else {
+                $field_value = 'Yes';
+            }
+        }
+
         /* Add property object to properties array. */
         $contact[$field_key] = $field_value;
 

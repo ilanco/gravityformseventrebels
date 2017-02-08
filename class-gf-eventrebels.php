@@ -7,6 +7,12 @@ class GFEventRebels extends GFFeedAddOn
     protected $_version = GF_EVENTREBELS_VERSION;
     protected $_min_gravityforms_version = '1.9.12';
     protected $_slug = 'gravityformseventrebels';
+
+    /**
+     * @var string $filter_prefix The prefix used for filters.
+     */
+    protected $filter_prefix = 'gf_eventrebels_filter';
+
     protected $_path = 'gravityformseventrebels/eventrebels.php';
     protected $_full_path = __FILE__;
     protected $_url = 'https://github.com/ilanco';
@@ -494,6 +500,9 @@ class GFEventRebels extends GFFeedAddOn
                 continue;
             }
 
+            /* Custom field processing. */
+            $contact = apply_filters($this->filter_prefix . '_pre_contact_custom_field', $contact, $field_key, $field_value, $field_id, $form);
+
             $contact = $this->add_contact_property($contact, $field_key, $field_value, $field_id, $form);
         }
 
@@ -535,15 +544,18 @@ class GFEventRebels extends GFFeedAddOn
         if (ctype_digit($field_key)) {
             $field_key = 'UDF' . $field_key;
 
-            if (isset($form['fields'][$field_id])) {
-                $field_value = $field_value;
-            } else {
+            /* Check if field key already exists. */
+            if (array_key_exists($field_key, $contact)) {
+                return $contact;
+            }
+
+            if (!isset($form['fields'][$field_id])) {
                 $field_value = 'Yes';
             }
-        }
 
-        /* Add property object to properties array. */
-        $contact[$field_key] = $field_value;
+            /* Add property object to properties array. */
+            $contact[$field_key] = $field_value;
+        }
 
         return $contact;
     }
